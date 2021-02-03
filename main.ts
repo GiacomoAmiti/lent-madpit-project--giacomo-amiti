@@ -1,3 +1,6 @@
+scene.onOverlapTile(SpriteKind.Player, sprites.builtin.coral3, function (sprite, location) {
+    statusbar.value += -50
+})
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     sword = sprites.createProjectileFromSprite(img`
         ........................
@@ -27,21 +30,26 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         `, DOOD_KILLER_PERSON, 200, 0)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    DOOD_KILLER_PERSON.vy = -150
+    if (DOOD_KILLER_PERSON.vy == 0) {
+        DOOD_KILLER_PERSON.vy = -150
+    }
 })
-info.onLifeZero(function () {
-    DOOD_KILLER_PERSON.destroy()
+statusbars.onZero(StatusBarKind.Health, function (status) {
+    game.over(false, effects.dissolve)
 })
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
-	
-})
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
-	
+scene.onOverlapTile(SpriteKind.Player, sprites.builtin.forestTiles8, function (sprite, location) {
+    game.over(true, effects.confetti)
 })
 let sword: Sprite = null
 let DOOD_KILLER_PERSON: Sprite = null
+let statusbar: StatusBarSprite = null
+scene.setBackgroundColor(9)
 tiles.setTilemap(tilemap`level1`)
-info.setLife(3)
+statusbar = statusbars.create(20, 4, StatusBarKind.Health)
+statusbar.setLabel("Health")
+statusbar.attachToSprite(DOOD_KILLER_PERSON)
+statusbar.setOffsetPadding(0, 10)
+statusbar.value = 100
 DOOD_KILLER_PERSON = sprites.create(img`
     . . . . 2 2 2 2 2 e . . . . . . 
     . . . 2 2 2 2 d 2 2 e . . . . . 
@@ -63,6 +71,3 @@ DOOD_KILLER_PERSON = sprites.create(img`
 controller.moveSprite(DOOD_KILLER_PERSON, 100, 0)
 DOOD_KILLER_PERSON.ay = 350
 scene.cameraFollowSprite(DOOD_KILLER_PERSON)
-game.onUpdateInterval(2000, function () {
-	
-})
