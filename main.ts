@@ -9,15 +9,23 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 statusbars.onZero(StatusBarKind.Health, function (status) {
     game.over(false, effects.splatter)
 })
+scene.onOverlapTile(SpriteKind.Player, sprites.builtin.coral0, function (sprite, location) {
+    statusbar.value += -1
+})
 function startlevel () {
-    DOOD_KILLER_PERSON.ay = 350
     scene.cameraFollowSprite(DOOD_KILLER_PERSON)
     if (current_level == 0) {
         tiles.setTilemap(tilemap`level1`)
     } else if (current_level == 1) {
         tiles.setTilemap(tilemap`level4`)
-    } else {
+    } else if (current_level == 2) {
         tiles.setTilemap(tilemap`level5`)
+    } else {
+        game.over(true, effects.confetti)
+    }
+    tiles.placeOnRandomTile(DOOD_KILLER_PERSON, assets.tile`tile`)
+    for (let value of tiles.getTilesByType(assets.tile`tile`)) {
+        tiles.setTileAt(value, assets.tile`transparency16`)
     }
     statusbar = statusbars.create(20, 4, StatusBarKind.Health)
     statusbar.setLabel("Health")
@@ -256,5 +264,11 @@ game.onUpdate(function () {
             `)
     } else {
     	
+    }
+    if ((DOOD_KILLER_PERSON.isHittingTile(CollisionDirection.Left) || DOOD_KILLER_PERSON.isHittingTile(CollisionDirection.Right)) && DOOD_KILLER_PERSON.vy > 0) {
+        DOOD_KILLER_PERSON.vy = 0
+        DOOD_KILLER_PERSON.ay = 0
+    } else {
+        DOOD_KILLER_PERSON.ay = 350
     }
 })
