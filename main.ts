@@ -182,7 +182,6 @@ DOOD_KILLER_PERSON = sprites.create(img`
     `, SpriteKind.Player)
 controller.moveSprite(DOOD_KILLER_PERSON, 100, 0)
 current_level = 0
-DOOD_KILLER_PERSON.setBounceOnWall(false)
 startlevel()
 game.onUpdate(function () {
     DOOD_KILLER_PERSON.setImage(img`
@@ -266,26 +265,50 @@ game.onUpdate(function () {
     } else {
     	
     }
-    if ((DOOD_KILLER_PERSON.isHittingTile(CollisionDirection.Left) || DOOD_KILLER_PERSON.isHittingTile(CollisionDirection.Right)) && DOOD_KILLER_PERSON.vy >= 0) {
+    if (DOOD_KILLER_PERSON.isHittingTile(CollisionDirection.Right) && DOOD_KILLER_PERSON.vy > 0) {
+        DOOD_KILLER_PERSON.vy = 0
+        DOOD_KILLER_PERSON.ay = 0
+        DOOD_KILLER_PERSON.setImage(img`
+            . . . . . . . f f . . . . . . . 
+            . . . . f f f f 2 f f . . . . . 
+            . . f f e e e e f 2 f f . . . . 
+            . f f e e e e e f 2 2 f f . . . 
+            . f e e e e f f e e e e f . . . 
+            . f f f f f e e 2 2 2 2 e f . . 
+            f f f e 2 2 2 f f f f e 2 f . . 
+            f f f f f f f f e e e f f f . . 
+            f e f e 4 4 e b f 4 4 e e f . . 
+            . f e e 4 d 4 b f d d e f . . . 
+            . . f e e e 4 d d d e e . c . . 
+            . . . f 2 2 2 2 e e d d e c c c 
+            . . . f 4 4 4 e 4 4 d d e c d d 
+            . . . f f f f f e e e e . c c c 
+            . . f f f f f f f f . . . c . . 
+            . . f f f . . f f . . . . . . . 
+            `)
+    } else {
+        DOOD_KILLER_PERSON.ay = 350
+    }
+    if (DOOD_KILLER_PERSON.isHittingTile(CollisionDirection.Left) && DOOD_KILLER_PERSON.vy > 0) {
         DOOD_KILLER_PERSON.vy = 0
         DOOD_KILLER_PERSON.ay = 0
         DOOD_KILLER_PERSON.setImage(img`
             . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . f f f . . . 
-            . . . . . f f f f f d b b f . . 
-            . . . f f e 2 f e f d b b b f . 
-            . . f 2 e 2 e f e e f f e e f f 
-            . f 2 2 e 2 f e 4 d d e d d e f 
-            . f f 2 e 2 f e 4 d d e d d e f 
-            . f e f e 2 f e f f d e 4 e f . 
-            . f e e f e f f b 1 d 4 2 4 f . 
-            . f e e f e 2 f e 4 4 e 2 4 f . 
-            . f e e e f 2 f 4 d e e 2 4 f f 
-            . . f e e f 2 f 4 4 e f f f f f 
-            . . f f e f e f e e e . . f f . 
-            . . . f f f f f f e f . . . . . 
-            . . . . . . . f f f . . . . . . 
-            . . . . . . . . . . . . . . . . 
+            . . . . . . f f f . . . . . . . 
+            . . . . . f 2 f f f f f . . . . 
+            . . . f f 2 2 e e e e e f f . . 
+            . . f f 2 2 2 e e e e e e f f . 
+            . . f e e e e f f f e e e e f . 
+            . f e 2 2 2 2 e e e f f f f f . 
+            . f 2 e f f f f f 2 2 2 e f f f 
+            . f f f e e e f f f f f f f f f 
+            . f e e 4 4 f b b e 4 4 e f e f 
+            . . f e d d f b b 4 d 4 e e f . 
+            c e e f d d d d d 4 e e e f . . 
+            c d d e e 2 2 2 2 2 2 2 f . . . 
+            c d d 4 4 e 5 4 4 4 4 4 f . . . 
+            . e e e e f f f f f f f f . . . 
+            . . . . . f f . . . f f f . . . 
             `)
     } else {
         DOOD_KILLER_PERSON.ay = 350
