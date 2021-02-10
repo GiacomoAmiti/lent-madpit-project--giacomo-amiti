@@ -16,10 +16,13 @@ function startlevel () {
     scene.cameraFollowSprite(DOOD_KILLER_PERSON)
     if (current_level == 0) {
         tiles.setTilemap(tilemap`level1`)
+        DOOD_DEAD_GHOST.say("Hello Adventurer. Move using the arrow keys and jump with the space bar. Beware of the crystals and look for the purple block to leave this world. Good luck!", 100000)
     } else if (current_level == 1) {
         tiles.setTilemap(tilemap`level4`)
+        DOOD_DEAD_GHOST.say(":)")
     } else if (current_level == 2) {
         tiles.setTilemap(tilemap`level5`)
+        DOOD_DEAD_GHOST.say(":)")
     } else {
         game.over(true, effects.confetti)
     }
@@ -39,6 +42,7 @@ scene.onOverlapTile(SpriteKind.Player, sprites.builtin.forestTiles8, function (s
 })
 let statusbar: StatusBarSprite = null
 let current_level = 0
+let DOOD_DEAD_GHOST: Sprite = null
 let DOOD_KILLER_PERSON: Sprite = null
 scene.setBackgroundImage(img`
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -180,8 +184,30 @@ DOOD_KILLER_PERSON = sprites.create(img`
     . . . f f f f f f e e f f . . . 
     . . . . f f . . . f f f . . . . 
     `, SpriteKind.Player)
+DOOD_DEAD_GHOST = sprites.create(img`
+    . . . f 4 4 f f f f . . . . . . 
+    . . f 4 5 5 4 5 f b f f . . . . 
+    . . f 5 5 5 5 4 e 3 3 b f . . . 
+    . . f e 4 4 4 e 3 3 3 3 b f . . 
+    . . f 3 3 3 3 3 3 3 3 3 3 f . . 
+    . f 3 3 e e 3 b e 3 3 3 3 f . . 
+    . f 3 3 e e e f f 3 3 3 3 f . . 
+    . f 3 e e e f b f b b b b f . . 
+    . . f e 4 4 f 1 e b b b b f . . 
+    . . . f 4 4 4 4 f b b b b f f . 
+    . . . f e e e f f f b b b b f . 
+    . . . f d d d e 4 4 f b b f . . 
+    . . . f d d d e 4 4 e f f . . . 
+    . . f b d b d b e e b f . . . . 
+    . . f f 1 d 1 d 1 d f f . . . . 
+    . . . . f f b b f f . . . . . . 
+    `, SpriteKind.Player)
 controller.moveSprite(DOOD_KILLER_PERSON, 100, 0)
 current_level = 0
+tiles.placeOnRandomTile(DOOD_DEAD_GHOST, assets.tile`myTile`)
+for (let value of tiles.getTilesByType(assets.tile`myTile`)) {
+    tiles.setTileAt(value, assets.tile`transparency16`)
+}
 startlevel()
 game.onUpdate(function () {
     DOOD_KILLER_PERSON.setImage(img`
